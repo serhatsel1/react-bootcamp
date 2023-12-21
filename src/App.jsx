@@ -1,16 +1,24 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import Details from "./pages/Detail";
+import { useRef } from "react";
 
 function App() {
+  // const countRef = useRef(0);
+  const focusRef = useRef();
+
+  const focusFunc = () => {
+    focusRef.current.focus();
+  };
+
+  // const clickFunc = () => {
+  //   countRef.current++;
+  //   console.log(countRef.current);
+  // };
+
+  // return <button onClick={clickFunc}>react useRef</button>;
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/detail/:id" element={<Details />} />
-      </Routes>
-    </Router>
+    <>
+      <input type="text" ref={focusRef} />
+      <button onClick={focusFunc}>focus</button>
+    </>
   );
 }
 
