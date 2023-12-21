@@ -1,41 +1,37 @@
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
-export const data = [
-  {
-    id: 0,
-    name: "React",
-    description: "React description",
-  },
-  {
-    id: 1,
-    name: "javascript",
-    description: "javascript description",
-  },
-  {
-    id: 2,
-    name: "python",
-    description: "python description",
-  },
-];
 const Home = () => {
   const navigate = useNavigate();
+  const [allData, setAllData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <>
-      <div>
-        {data.map((value, index) => (
-          <div
-            onClick={() => navigate(`/detail/${value.id}`)}
-            style={{ cursor: "pointer", marginBottom: "30px" }}
-            key={index}
-          >
-            {/* <div>{value.id}</div> */}
-            <div>{value.name}</div>
-            <div>{value.description}</div>
-          </div>
-        ))}
-      </div>
-    </>
+  useEffect(() => {
+    setLoading(true);
+    const getData = async () => {
+      const { data } = await axios.get("https://fakestoreapi.com/products");
+      setAllData(data);
+      setLoading(false);
+    };
+    getData();
+  }, []);
+
+  console.log(allData);
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <div>
+      {allData?.map((value, index) => (
+        <div
+          onClick={() => navigate(`detail/${value?.id}`)}
+          style={{ marginBottom: "30px", cursor: "pointer" }}
+          key={index}>
+          <div>{value?.category}</div>
+          <img style={{ width: "100px" }} src={value?.image} alt="" />
+        </div>
+      ))}
+    </div>
   );
 };
 

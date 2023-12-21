@@ -1,26 +1,17 @@
-import React, { useState, memo, useCallback } from "react";
 
-const Counter = React.memo(({ increment }) => {
-  console.log("Render !!!");
-
-  return (
-    <>
-      <button onClick={increment}>arttır</button>
-    </>
-  );
-});
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Detail from "./pages/Detail";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  const increment = useCallback(() => {
-    setCount(count + 1);
-  },[count]);
-
   return (
     <>
-      <div>{count}</div>
-      <Counter increment={increment} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/detail/:id" element={<Detail />} />
+        </Routes>
+      </Router>
     </>
   );
 }

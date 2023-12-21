@@ -1,26 +1,27 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-
-import { data } from "./Home";
+import axios from "axios";
 
 const Detail = () => {
-  const [getData, setGetData] = useState(null);
   const { id } = useParams();
-  const location = useLocation();
-  console.log("locationPathname", location.pathname);
+  const [singleData, setSingleData] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      setGetData(data.find((value) => value.id == id));
-    }
+    const getSingleData = async () => {
+      const { data } = await axios.get(
+        `https://fakestoreapi.com/products/${id}`
+      );
+      setSingleData(data);
+    };
+    getSingleData();
   }, [id]);
-
-  console.log(getData);
-
+  console.log("SingleData -->", singleData);
   return (
     <>
-      <div>{getData?.name}</div>
-      <div>{getData?.description}</div>
+      <div style={{ marginBottom: "30px", cursor: "pointer" }}>
+        <div>{singleData?.category}</div>
+        <img style={{ width: "100px" }} src={singleData?.image} alt="" />
+      </div>
     </>
   );
 };
